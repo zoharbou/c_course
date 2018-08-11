@@ -5,7 +5,7 @@
 const char HIT = 'x';
 const char MISS = 'o';
 const char INIT_CELL = '_';
-const char EMPTY = '0';
+
 const int sizeOfBoard = 10;
 const int TRUE = 0;
 const int FALSE = 1;
@@ -23,12 +23,38 @@ Direction directions[4] = {
         {-1, 0}
 };
 
+typedef struct Ship {
+    char sign;
+    int lenght;
+    int numOfHits;
+} Ship;
+
+const Ship EMPTY = {'0', 0, 0};
+
 typedef struct Cell {
-    char content;
+    Ship content;
     char status;
 } Cell;
 
 
+/**
+ * 'a' for aircraft carrier in length 5
+ * 'p' for patrol in length 4
+ * 'm' for Missile ship in length 3
+ * 's' for submarine in length 3
+ * 'd' for destroyer in length 2
+ */
+Ship gameShips[5] = {
+        {'a', 5, 0},
+        {'p', 4, 0},
+        {'m', 3, 0},
+        {'s', 3, 0},
+        {'d', 2, 0},
+};
+
+/*
+ * the game board
+ */
 Cell board[10][10];
 
 
@@ -51,7 +77,7 @@ void initShipBoard() {
 }
 
 int isCellFree(const int row, const int column) {
-    if (board[row][column].content == EMPTY) {
+    if (board[row][column].content.sign == EMPTY.sign) {
         return TRUE;
     }
     return FALSE;
@@ -97,17 +123,25 @@ int checkCollision(int row, int col, const Direction direction, int sizeOfShip) 
 }
 
 
-void placeShip(int sizeOfShip, char shipSign) {
+void placeSingleShip(Ship ship) {
     int row, col, i;
     Direction direction;
     do {
-        getRandLocation(&row, &col, &direction, sizeOfShip); // find a location and direction
-    } while (checkCollision(row, col, direction, sizeOfShip) == FALSE); // check if the place is free
+        getRandLocation(&row, &col, &direction, ship.lenght); // find a location and direction
+    } while (checkCollision(row, col, direction, ship.lenght) == FALSE); // check if the place is free
 
-    for (i = 0; i < sizeOfShip; ++i) { // now place the ship
-        board[row][col].content = shipSign;
+    for (i = 0; i < ship.lenght; ++i) { // now place the ship
+        board[row][col].content = ship;
         row += direction.addToRow;
         col += direction.addToColumn;
+    }
+}
+
+void placeShips() {
+    initShipBoard();
+    int i;
+    for (i = 0; i < sizeof(gameShips) / sizeof(Ship); ++i) {
+        placeSingleShip(gameShips[i]);
     }
 }
 
@@ -118,7 +152,7 @@ int isLetter(char ch) {
     return FALSE;
 }
 
-//TO.DO fix this!! its not working
+//TODO fix this!! its not working
 void getMove(int *row, int *column) {
     printf("please make your move:\n");
     char rowInChar;
@@ -139,8 +173,10 @@ void placeMove(const int row, const int column) {
         printf("you already placed that move\n");
         return;
     }
-    if (board[row][column].content != EMPTY) { // there is a ship part in this cell
+    if (board[row][column].content.sign != EMPTY.sign) { // there is a ship part in this cell
         board[row][column].status = HIT;
+        board[row][column].content.numOfHits++;
+
         printf("Hit!\n");
         return;
     }
@@ -159,27 +195,28 @@ void printBoard(Cell board[][10], int sizeOfBoard) {
     }
 }
 
-// TO.DO delete before final submmision!!!!!!!
+// TODO delete before final submission!!!!!!!
 void printBehind(Cell board[][10], int sizeOfBoard) {
     int rowIndex, colIndex;
     for (rowIndex = 0; rowIndex < sizeOfBoard; ++rowIndex) {
         for (colIndex = 0; colIndex < sizeOfBoard; ++colIndex) {
-            printf(" %c", board[rowIndex][colIndex].content);
+            printf(" %c", board[rowIndex][colIndex].content.sign);
         }
         printf("\n");
     }
 }
 
 
+int isSunk(int row, int col) {
+    Ship shipGotHit = board[row][col].content;
+    if (shipGotHit.numOfHits == shipGotHit.lenght) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 int main() {
-
-    initShipBoard();
-    placeShip(5, 'a');
-    placeShip(4, 'b');
-    placeShip(3, 'c');
-    placeShip(3, 'd');
-    placeShip(2, 'e');
-
+    placeShips();
     printBehind(board, sizeOfBoard);
 
 //    initBoard();
