@@ -24,10 +24,11 @@ Direction directions[4] = {
 };
 
 typedef struct Ship {
-    char sign;
+    char signature;
     int lenght;
     int numOfHits;
 } Ship;
+
 
 const Ship EMPTY = {'0', 0, 0};
 
@@ -77,7 +78,7 @@ void initShipBoard() {
 }
 
 int isCellFree(const int row, const int column) {
-    if (board[row][column].content.sign == EMPTY.sign) {
+    if (board[row][column].content.signature == EMPTY.signature) {
         return TRUE;
     }
     return FALSE;
@@ -173,7 +174,7 @@ void placeMove(const int row, const int column) {
         printf("you already placed that move\n");
         return;
     }
-    if (board[row][column].content.sign != EMPTY.sign) { // there is a ship part in this cell
+    if (board[row][column].content.signature != EMPTY.signature) { // there is a ship part in this cell
         board[row][column].status = HIT;
         board[row][column].content.numOfHits++;
 
@@ -200,7 +201,7 @@ void printBehind(Cell board[][10], int sizeOfBoard) {
     int rowIndex, colIndex;
     for (rowIndex = 0; rowIndex < sizeOfBoard; ++rowIndex) {
         for (colIndex = 0; colIndex < sizeOfBoard; ++colIndex) {
-            printf(" %c", board[rowIndex][colIndex].content.sign);
+            printf(" %c", board[rowIndex][colIndex].content.signature);
         }
         printf("\n");
     }
