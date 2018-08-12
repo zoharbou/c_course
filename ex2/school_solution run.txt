@@ -1,0 +1,329 @@
+<2|0>evyatar100@aqua-35:~/Desktop/ battleships_game
+enter board size: 6
+ ,1,2,3,4,5,6
+a _ _ _ _ _ _
+b _ _ _ _ _ _
+c _ _ _ _ _ _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: a 4
+Miss.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ _ _ _ _ _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 2
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ x _ _ _ _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 3
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ x x _ _ _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 4
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ x x x _ _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 5
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ x x x x _
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 6
+Miss.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c _ x x x x o
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: c 1
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b _ _ _ _ _ _
+c x x x x x o
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: b 1
+Hit.
+ ,1,2,3,4,5,6
+a _ _ _ o _ _
+b x _ _ _ _ _
+c x x x x x o
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: a 1
+Hit and sunk.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x _ _ _ _ _
+c x x x x x o
+d _ _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: d 1
+Miss.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x _ _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: b 99
+b 99
+Invalid move, try again.
+enter coordinates: kdsfl
+k 99
+Invalid move, try again.
+enter coordinates: s 99
+Invalid move, try again.
+enter coordinates: lskflm
+l 99
+Invalid move, try again.
+enter coordinates: s 99
+Invalid move, try again.
+enter coordinates: f 99
+Invalid move, try again.
+enter coordinates: b2
+m 99
+Invalid move, try again.
+enter coordinates: b 2
+2 99
+Invalid move, try again.
+enter coordinates:   2
+Invalid move, try again.
+enter coordinates: b 2
+Hit.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: b 2
+Already been Hit.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: a 4
+Miss.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: a 4
+Miss.
+ ,1,2,3,4,5,6
+a x _ _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: a 2
+Miss.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o _ _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: d
+
+
+
+
+
+
+Hit and sunk.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates: e 2
+Already been Hit.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x _ _ _ _
+e _ _ _ _ _ _
+f _ _ _ _ _ _
+enter coordinates:   2
+Invalid move, try again.
+enter coordinates: f 2
+Miss.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x _ _ _ _
+e _ _ _ _ _ _
+f _ o _ _ _ _
+enter coordinates: e 2
+Miss.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x _ _ _ _
+e _ o _ _ _ _
+f _ o _ _ _ _
+enter coordinates: d 3
+Hit.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x x _ _ _
+e _ o _ _ _ _
+f _ o _ _ _ _
+enter coordinates: e 3
+Miss.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x _ _ _ _
+c x x x x x o
+d o x x _ _ _
+e _ o o _ _ _
+f _ o _ _ _ _
+enter coordinates: b 3
+Hit.
+ ,1,2,3,4,5,6
+a x o _ o _ _
+b x x x _ _ _
+c x x x x x o
+d o x x _ _ _
+e _ o o _ _ _
+f _ o _ _ _ _
+enter coordinates: a 3
+Hit and sunk.
+ ,1,2,3,4,5,6
+a x o x o _ _
+b x x x _ _ _
+c x x x x x o
+d o x x _ _ _
+e _ o o _ _ _
+f _ o _ _ _ _
+enter coordinates: e 1
+Miss.
+ ,1,2,3,4,5,6
+a x o x o _ _
+b x x x _ _ _
+c x x x x x o
+d o x x _ _ _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: b 5
+Hit.
+ ,1,2,3,4,5,6
+a x o x o _ _
+b x x x _ x _
+c x x x x x o
+d o x x _ _ _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: b 4
+Miss.
+ ,1,2,3,4,5,6
+a x o x o _ _
+b x x x o x _
+c x x x x x o
+d o x x _ _ _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: d 4
+Hit and sunk.
+ ,1,2,3,4,5,6
+a x o x o _ _
+b x x x o x _
+c x x x x x o
+d o x x x _ _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: a 5
+Miss.
+ ,1,2,3,4,5,6
+a x o x o o _
+b x x x o x _
+c x x x x x o
+d o x x x _ _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: d 5
+Hit.
+ ,1,2,3,4,5,6
+a x o x o o _
+b x x x o x _
+c x x x x x o
+d o x x x x _
+e o o o _ _ _
+f _ o _ _ _ _
+enter coordinates: e 5
+Hit.
+ ,1,2,3,4,5,6
+a x o x o o _
+b x x x o x _
+c x x x x x o
+d o x x x x _
+e o o o _ x _
+f _ o _ _ _ _
+enter coordinates:  f 5
+  5
+Invalid move, try again.
+enter coordinates:   5
+Invalid move, try again.
+enter coordinates: f 5
+Game over.
+ ,1,2,3,4,5,6
+a x o x o o _
+b x x x o x _
+c x x x x x o
+d o x x x x _
+e o o o _ x _
+f _ o _ _ x _
+<3|0>evyatar100@aqua-35:~/Desktop/ battleships_game
+enter board size: -5
+there is no possible position for the ships! the board is too small<4|1>evyatar100@aqua-35:~/Desktop/ battleships_game
+enter board size: 4
+there is no possible position for the ships! the board is too small<5|1>evyatar100@aqua-35:~/Desktop/

@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <mem.h>
+#include <assert.h>
 
 
 /**
@@ -50,7 +52,7 @@ const Ship EMPTY = {'0', 0, 0};
 
 typedef struct Cell
 {
-    Ship content;
+    Ship *content;
     char status;
 } Cell;
 
@@ -75,8 +77,10 @@ const char *MISS_MSG = "Miss.\n";
 const char *HIT_MSG = "Hit!\n";
 const char *SUNK_MSG = "Hit and Sunk.\n";
 const char *INVALID_MOVE_MSG = "Invalid move, try again\n";
-const char *ENTER_MOVE_MSG = "enter coordinates: \n";
-
+const char *ENTER_MOVE_MSG = "enter coordinates: ";
+const char *ENTER_SIZE_MSG = "enter board size: ";
+const char *START_GAME_MSG = "Ready to play\n";
+const char *END_GAME_MSG = "Game over\n";
 
 Cell **g_gameBoard;
 
@@ -84,6 +88,7 @@ Cell **g_gameBoard;
 const char HIT = 'x';
 const char MISS = 'o';
 const char INIT_CELL = '_';
+const char *EXIT_CALL = "exit";
 
 const int TRUE = 0;
 const int FALSE = 1;
@@ -103,9 +108,7 @@ Ship gameShips[5] = {
         {'d', 2, 0},
 };
 
-/*
- * the game board
- */
+static int gameOverFlag = 1; // init with false
 
 /**
  * @var
@@ -117,6 +120,17 @@ Ship gameShips[5] = {
 
 
 // ------------------------------ functions -----------------------------
+
+void buff_clr(void)
+{
+    char junk;
+    do
+    {
+        junk = (char) getchar();
+    } while (junk!='\n');
+}
+
+
 /**
  * this function checks the validity of the input size of the table. if its not valid it will
  * return 1, else 0.
@@ -143,7 +157,7 @@ int isIndexInBoard(const int row, const int col, int sizeOfBoard)
 
 int isCellFree(const int row, const int column)
 {
-    if (g_gameBoard[row][column].content.signature==EMPTY.signature)
+    if (g_gameBoard[row][column].content==NULL)
     {
         return TRUE;
     }
@@ -204,17 +218,18 @@ int checkCollision(int row, int col, const Direction direction, int sizeOfShip)
     return TRUE;
 }
 
-void placeSingleShip(Ship ship, int sizeOfBoard)
+void placeSingleShip(Ship *ship, int sizeOfBoard)
 {
     int row, col, i;
     Direction direction;
     do
     {
-        getRandLocation(&row, &col, &direction, ship.length,
+        getRandLocation(&row, &col, &direction, ship->length,
                         sizeOfBoard); // find a location and direction
-    } while (checkCollision(row, col, direction, ship.length)==FALSE); // check if the place is free
+    } while (checkCollision(row, col, direction, ship->length)==FALSE); // check if the place is
+    // free
 
-    for (i = 0 ; i < ship.length ; ++i)
+    for (i = 0 ; i < ship->length ; ++i)
     { // now place the ship
         g_gameBoard[row][col].content = ship;
         row += direction.addToRow;
@@ -227,7 +242,7 @@ void placeShips(int sizeOfBoard)
     int i;
     for (i = 0 ; i < sizeof(gameShips) / sizeof(Ship) ; ++i)
     {
-        placeSingleShip(gameShips[i], sizeOfBoard);
+        placeSingleShip(&gameShips[i], sizeOfBoard);
     }
 }
 
@@ -239,7 +254,7 @@ void initBoard(int sizeOfBoard)
         for (j = 0 ; j < sizeOfBoard ; ++j)
         {
             g_gameBoard[i][j].status = INIT_CELL;
-            g_gameBoard[i][j].content = EMPTY;
+            g_gameBoard[i][j].content = NULL;
 
         }
     }
@@ -278,25 +293,57 @@ int isLetter(char ch)
     return FALSE;
 }
 
+
+void addSunkShip()
+{
+    static int sunkShipCounter = 0;
+
+    sunkShipCounter++;
+
+    if (sizeof(gameShips) / sizeof(Ship)==sunkShipCounter)
+    {
+        gameOverFlag = TRUE;
+    }
+}
+
 //TODO fix this!! its not working
-void getMove(int *row, int *column)
+int getMove(int *row, int *column, int sizeOfBoard)
 {
     printf(ENTER_MOVE_MSG);
-    char rowInChar;
-    int currCol;
-    do
+    char inputStr[10];
+    int inputNum;
+    scanf("%s %d", inputStr, &inputNum);
+    buff_clr();
+    if (strcmp(inputStr, EXIT_CALL)==TRUE)
+    { // we need to exit the program
+        gameOverFlag = TRUE;
+        return TRUE;
+    }
+    if (strlen(inputStr)!=1)
+    { // the input is not a single char
+        return FALSE;
+    }
+
+    char rowInLetter = inputStr[0];
+    if (isLetter(rowInLetter)==FALSE)
+    { // the input is not a letter follows by a number.
+        return FALSE;
+    }
+    *row = rowInLetter - 'a';
+    *column = inputNum - 1;
+    return isIndexInBoard(*row, *column, sizeOfBoard); // checks if the index is valid
+}
+
+int isSunk(int row, int col)
+{
+    Ship *shipGotHit = g_gameBoard[row][col].content;
+    assert(shipGotHit!=NULL);
+    if (shipGotHit->numOfHits==shipGotHit->length)
     {
-        if (scanf("%c%d", &rowInChar, &currCol)==2 && isLetter(rowInChar)==TRUE)
-        {
-            *row = rowInChar - 'a';
-            *column = currCol - 1;
-            break;
-        }
-        else
-        {
-            fprintf(stderr, INVALID_MOVE_MSG);
-        }
-    } while (1);
+        addSunkShip();
+        return TRUE;
+    }
+    return FALSE;
 }
 
 void placeMove(const int row, const int column)
@@ -306,10 +353,10 @@ void placeMove(const int row, const int column)
         printf(ALREADY_HIT_MSG);
         return;
     } // its a new move
-    if (g_gameBoard[row][column].content.signature!=EMPTY.signature)
+    if (g_gameBoard[row][column].content!=NULL)
     { // there is a ship part in this cell
         g_gameBoard[row][column].status = HIT; // in the user moves board
-        g_gameBoard[row][column].content.numOfHits++; // adding a hit to the ship
+        g_gameBoard[row][column].content->numOfHits++; // adding a hit to the ship
         if (isSunk(row, column)==TRUE)
         { // the ship was sunk after the last move
             printf(SUNK_MSG);
@@ -345,51 +392,45 @@ void printBoard(int sizeOfBoard)
     }
 }
 
-// TODO delete before final submission!!!!!!!
-void printBehind(int sizeOfBoard)
+
+void playSingleRound(int sizeOfBoard)
 {
-    int rowIndex, colIndex;
-    for (rowIndex = 0 ; rowIndex < sizeOfBoard ; ++rowIndex)
+    printBoard(sizeOfBoard);
+    int row, col;
+    while (getMove(&row, &col, sizeOfBoard)==FALSE)
     {
-        for (colIndex = 0 ; colIndex < sizeOfBoard ; ++colIndex)
-        {
-            printf(" %c", g_gameBoard[rowIndex][colIndex].content.signature);
-        }
-        printf("\n");
+        fprintf(stderr, INVALID_MOVE_MSG);
+    }
+    if (gameOverFlag==FALSE)
+    {
+        placeMove(row, col);
     }
 }
 
-
-int isSunk(int row, int col)
+void endGame(int sizeOfBoard)
 {
-    Ship shipGotHit = g_gameBoard[row][col].content;
-    if (shipGotHit.numOfHits==shipGotHit.length)
-    {
-        return TRUE;
-    }
-    return FALSE;
+    printf(END_GAME_MSG);
+    printBoard(sizeOfBoard);
+    freeGameBoard(sizeOfBoard);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-    int size = NULL;
-    if (argc==EXPECTED_ARGS)
+    int size;
+    printf(ENTER_SIZE_MSG);
+    scanf("%d", &size);
+    buff_clr();
+    if (isValidSize(size)==FALSE)
     {
-        size = atoi(argv[1]); // returns 0 in case the str is not an int.
-        if (size==0 || isValidSize(size)!=0)
-        {
-            fprintf(stderr, INVALID_SIZE_MSG);
-            return 0;
-        }
-    }
-    else
-    {
-        fprintf(stderr, INVALID_INPUT_MSG);
+        fprintf(stderr, INVALID_SIZE_MSG);
         return 0;
     }
     buildGameBoard(size);
-    printBoard(size);
-    printBehind(size);
-    freeGameBoard(size);
+    printf(START_GAME_MSG);
+    while (gameOverFlag==FALSE)
+    {
+        playSingleRound(size);
+    }
+    endGame(size);
     return 0;
 }
