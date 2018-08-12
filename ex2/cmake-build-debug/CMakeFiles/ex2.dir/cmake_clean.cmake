@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ex2.dir/main.c.obj"
+  "CMakeFiles/ex2.dir/battleShips.c.obj"
   "ex2.pdb"
   "ex2.exe"
   "ex2.exe.manifest"
