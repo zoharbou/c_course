@@ -3,4 +3,4 @@ project(ex2 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(ex2 battleShips.c battleShips.h)
+add_executable(ex2 battleShips.c battleShips.h battleships_game.c)

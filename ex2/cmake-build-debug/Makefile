@@ -149,6 +149,33 @@ battleShips.c.s:
 	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleShips.c.s
 .PHONY : battleShips.c.s
 
+battleships_game.obj: battleships_game.c.obj
+
+.PHONY : battleships_game.obj
+
+# target to build an object file
+battleships_game.c.obj:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships_game.c.obj
+.PHONY : battleships_game.c.obj
+
+battleships_game.i: battleships_game.c.i
+
+.PHONY : battleships_game.i
+
+# target to preprocess a source file
+battleships_game.c.i:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships_game.c.i
+.PHONY : battleships_game.c.i
+
+battleships_game.s: battleships_game.c.s
+
+.PHONY : battleships_game.s
+
+# target to generate assembly for a file
+battleships_game.c.s:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships_game.c.s
+.PHONY : battleships_game.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -161,6 +188,9 @@ help:
 	@echo ... battleShips.obj
 	@echo ... battleShips.i
 	@echo ... battleShips.s
+	@echo ... battleships_game.obj
+	@echo ... battleships_game.i
+	@echo ... battleships_game.s
 .PHONY : help
 
 

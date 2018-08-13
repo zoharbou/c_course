@@ -4,3 +4,6 @@
 CMakeFiles/ex2.dir/battleShips.c.obj: ../battleShips.c
 CMakeFiles/ex2.dir/battleShips.c.obj: ../battleShips.h
 
+CMakeFiles/ex2.dir/battleships_game.c.obj: ../battleShips.h
+CMakeFiles/ex2.dir/battleships_game.c.obj: ../battleships_game.c
+

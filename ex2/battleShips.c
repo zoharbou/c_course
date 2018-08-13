@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <mem.h>
 #include <assert.h>
 #include "battleShips.h"
 
@@ -29,17 +28,86 @@
 
 // -------------------------- const definitions -------------------------
 
-/**
- * @var a dynamic Cell 2d matrix
- *@brief the game board.
- */
-Cell **g_gameBoard;
+
 
 /**
- * @var informative flag
- * @brief will turn to const true (0) when the game is over. init with const false (1).
+ * @var string massage
+ * @brief informative massage for the case that the input coordinates was already chosen.
  */
-static int gameOverFlag = 1; // init with false
+const char *REPEATED_MOVE_MSG = "you already placed that move.\n";
+
+/**
+ * @var string massage
+ * @brief informative massage for the case that the user didn't hit any ship.
+ */
+const char *MISS_MSG = "Miss.\n";
+
+/**
+ * @var string massage
+ * @brief informative massage for the case that the user hit a ship
+ */
+const char *HIT_MSG = "Hit!\n";
+
+/**
+ * @var string massage
+ * @brief informative massage for the case that the user sunk a ship
+ */
+const char *SUNK_MSG = "Hit and Sunk.\n";
+
+
+/**
+ * @var string massage
+ * @brief informative massage to ask the user for a board size
+ */
+const char *ENTER_SIZE_MSG = "enter board size: ";
+
+
+/**
+ * an array of directions for the game. right left up and down
+ */
+Direction directions[4] = {
+        {0,  1}, // right
+        {0,  -1}, // left
+        {1,  0}, // up
+        {-1, 0} // down
+};
+
+/**
+ * @brief an array of the game ships:
+ * aircraft carrier in length 5
+ * patrol in length 4
+ * Missile ship in length 3
+ * submarine in length 3
+ * destroyer in length 2
+ */
+Ship gameShips[5] = {
+        {5, 0},
+        {4, 0},
+        {3, 0},
+        {3, 0},
+        {2, 0},
+};
+
+/**
+ * the upper and lower bounds for the game board.
+ */
+const int MIN_SIZE = 5;
+const int MAX_SIZE = 26;
+
+/**
+ * the lowest index possible for the game board. maximal is simply the board size - 1.
+ * maximal cant be constant cause its unknown at compile time
+ */
+const int MIN_INDEX = 0;
+
+/**
+ * @brief constants for the Cell status. possible stages are- miss, hit, unreached.
+ */
+
+const char HIT = 'x';
+const char MISS = 'o';
+const char INIT_CELL = '_';
+
 
 
 // ------------------------------ functions -----------------------------
@@ -275,21 +343,6 @@ int buildGameBoard(const int sizeOfBoard)
     return TRUE;
 }
 
-/**
- * this function free the memory allocated for the game board.
- * @param sizeOfBoard : the size of the board
- */
-void freeGameBoard(const int sizeOfBoard)
-{
-    int i;
-    for (i = 0 ; i < sizeOfBoard ; i++)
-    {
-        free(g_gameBoard[i]);
-        g_gameBoard[i] = NULL;
-    }
-    free(g_gameBoard);
-    g_gameBoard = NULL;
-}
 
 /**
  * this function receives a char and returns if its a small letter or not
@@ -305,61 +358,12 @@ int isLetter(char ch)
     return FALSE;
 }
 
-/**
- * this function adds a sunk ship to the counter to know how many ships are left in the game.
- * it checks if all the ship where sunk and if the answer is positive than it finishes the game
- */
-void addSunkShip(void)
-{
-    static int sunkShipCounter = 0;
-
-    sunkShipCounter++;
-
-    if (sizeof(gameShips) / sizeof(Ship)==sunkShipCounter)
-    {
-        gameOverFlag = TRUE;
-    }
-}
-
-/**
- * this function gets the move from the user and checks its validation.
- * @param row : the pointer for the row var that will set in the input value
- * @param column : the pointer for the col var that will set in the input value
- * @param sizeOfBoard : the size of the game board.
- * @return FALSE in case the input is not valid, TRUE otherwise
- */
-int getMove(int *row, int *column, const int sizeOfBoard)
-{
-    printf(ENTER_MOVE_MSG);
-    char inputStr[10];
-    int inputNum;
-    scanf("%s %d", inputStr, &inputNum);
-    buff_clr();
-    if (strcmp(inputStr, EXIT_CALL)==TRUE)
-    { // we need to exit the program
-        gameOverFlag = TRUE;
-        return TRUE;
-    }
-    if (strlen(inputStr)!=1)
-    { // the input is not a single char
-        return FALSE;
-    }
-
-    char rowInLetter = inputStr[0];
-    if (isLetter(rowInLetter)==FALSE)
-    { // the input is not a letter follows by a number.
-        return FALSE;
-    }
-    *row = rowInLetter - 'a';
-    *column = inputNum - 1;
-    return isIndexInBoard(*row, *column, sizeOfBoard); // checks if the index is valid
-}
 
 /**
  * this function checks if the ship that just got hit sunk also. we get its coordinates.
  * @param row : the index of the row
  * @param col : the index of the col
- * @return TRUE if the ship is sunk, FALSE otherwise
+ * @return TRUE if the ship is sunk, FALSE otherwise. returns WIN_GAME if all the ship where sunk
  */
 int isSunk(const int row, const int col)
 {
@@ -367,8 +371,7 @@ int isSunk(const int row, const int col)
     assert(shipGotHit!=NULL);
     if (shipGotHit->numOfHits==shipGotHit->length)
     {
-        addSunkShip();
-        return TRUE;
+        return addSunkShip(); // WIN_GAME or TRUE
     }
     return FALSE;
 }
@@ -378,86 +381,37 @@ int isSunk(const int row, const int col)
  * massage according to the move that was made (already made, miss, hit, hit and sunk)
  * @param row : the index of the row for the move
  * @param column : the index of the column for the move
+ * @return TRUE for successful move and WIN_GAME in case that the move finished the game
  */
-void placeMove(const int row, const int column)
+int placeMove(const int row, const int column)
 {
     if (g_gameBoard[row][column].status!=INIT_CELL)
     { // the move was already made
         printf(REPEATED_MOVE_MSG);
-        return;
+        return TRUE;
     } // its a new move
     if (g_gameBoard[row][column].content!=NULL)
     { // there is a ship part in this cell
         g_gameBoard[row][column].status = HIT; // in the user moves board
         g_gameBoard[row][column].content->numOfHits++; // adding a hit to the ship
-        if (isSunk(row, column)==TRUE)
-        { // the ship was sunk after the last move
+        int sunkFlag = isSunk(row, column);
+        if (sunkFlag==WIN_GAME)
+        { // the ship was sunk after the last move and the user won the game
+            return WIN_GAME;
+        }
+        if (sunkFlag==TRUE) // sunk but there are ships left in the game
+        {
             printf(SUNK_MSG);
-            return;
+            return TRUE;
         }
         printf(HIT_MSG); // just a hit no sunk
-        return;
+        return TRUE;
     } // the cell is empty
     g_gameBoard[row][column].status = MISS;
     printf(MISS_MSG);
+    return TRUE;
 }
 
-/**
- * this function prints the game board.
- * @param sizeOfBoard : the size of the game board
- */
-void printBoard(const int sizeOfBoard)
-{
-    char rowNum = 1;
-    int colNum = 'a';
-    int rowIndex, colIndex;
-    printf(" ");
-    for (rowIndex = 0 ; rowIndex < sizeOfBoard ; ++rowIndex) // print the col numbers
-    {
-        printf(" %d", rowNum++);
-    }
-    printf("\n");
-    for (rowIndex = 0 ; rowIndex < sizeOfBoard ; ++rowIndex)
-    {
-        printf("%c", colNum++); // print the row numbers
-        for (colIndex = 0 ; colIndex < sizeOfBoard ; ++colIndex)
-        { // print the status of the cell
-            printf(" %c", g_gameBoard[rowIndex][colIndex].status);
-        }
-        printf("\n");
-    }
-}
-
-
-/**
- * this function activates a single round in the game.
- * @param sizeOfBoard : the size of the game board
- */
-void playSingleRound(const int sizeOfBoard)
-{
-    printBoard(sizeOfBoard);
-    int row, col;
-    while (getMove(&row, &col, sizeOfBoard)==FALSE)
-    {
-        fprintf(stderr, INVALID_MOVE_MSG);
-    }
-    if (gameOverFlag==FALSE) // if the game is over no need to make tha move
-    {
-        placeMove(row, col);
-    }
-}
-
-/**
- * @brief this function terminates the game. prints game over and the final board.
- * @note here we use the free function for the allocation of the game board
- * @param sizeOfBoard
- */
-void endGame(const int sizeOfBoard)
-{
-    printf(END_GAME_MSG);
-    printBoard(sizeOfBoard);
-    freeGameBoard(sizeOfBoard);
-}
 
 /**
  * this function gets the size of the board from the user
@@ -479,37 +433,3 @@ int getSizeOfBoard(int *sizeOfBoard)
     return TRUE;
 }
 
-/**
- * this function runs the rounds of the game in a loop until the game is over
- * @param sizeOfBoard : the size of the board
- */
-void playGame(const int sizeOfBoard)
-{
-    printf(START_GAME_MSG);
-    while (gameOverFlag==FALSE)
-    {
-        playSingleRound(sizeOfBoard);
-    }
-    endGame(sizeOfBoard);
-}
-
-/**
- * the main function that runs the game.
- * @return 0 for a standard exit from the program, 1 for an exit because of an error in the program
- */
-int main()
-{
-    int sizeOfBoard;
-    if (getSizeOfBoard(&sizeOfBoard)==FALSE)
-    {
-        fprintf(stderr, INVALID_SIZE_MSG);
-        return 1;
-    }
-    if (buildGameBoard(sizeOfBoard)==FALSE)
-    { // the malloc failed
-        fprintf(stderr, OUT_OF_MEMORY_MSG);
-        return 1;
-    }
-    playGame(sizeOfBoard);
-    return 0;
-}
