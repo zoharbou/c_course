@@ -56,28 +56,28 @@ include CMakeFiles/ex2.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/ex2.dir/flags.make
 
-CMakeFiles/ex2.dir/battleShips.c.obj: CMakeFiles/ex2.dir/flags.make
-CMakeFiles/ex2.dir/battleShips.c.obj: ../battleShips.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ex2.dir/battleShips.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\ex2.dir\battleShips.c.obj   -c "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleShips.c"
+CMakeFiles/ex2.dir/battleships.c.obj: CMakeFiles/ex2.dir/flags.make
+CMakeFiles/ex2.dir/battleships.c.obj: ../battleships.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ex2.dir/battleships.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\ex2.dir\battleships.c.obj   -c "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleships.c"
 
-CMakeFiles/ex2.dir/battleShips.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ex2.dir/battleShips.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleShips.c" > CMakeFiles\ex2.dir\battleShips.c.i
+CMakeFiles/ex2.dir/battleships.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ex2.dir/battleships.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleships.c" > CMakeFiles\ex2.dir\battleships.c.i
 
-CMakeFiles/ex2.dir/battleShips.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ex2.dir/battleShips.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleShips.c" -o CMakeFiles\ex2.dir\battleShips.c.s
+CMakeFiles/ex2.dir/battleships.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ex2.dir/battleships.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\Dell\Desktop\semester b\c course\ex2\c_course\ex2\battleships.c" -o CMakeFiles\ex2.dir\battleships.c.s
 
-CMakeFiles/ex2.dir/battleShips.c.obj.requires:
+CMakeFiles/ex2.dir/battleships.c.obj.requires:
 
-.PHONY : CMakeFiles/ex2.dir/battleShips.c.obj.requires
+.PHONY : CMakeFiles/ex2.dir/battleships.c.obj.requires
 
-CMakeFiles/ex2.dir/battleShips.c.obj.provides: CMakeFiles/ex2.dir/battleShips.c.obj.requires
-	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleShips.c.obj.provides.build
-.PHONY : CMakeFiles/ex2.dir/battleShips.c.obj.provides
+CMakeFiles/ex2.dir/battleships.c.obj.provides: CMakeFiles/ex2.dir/battleships.c.obj.requires
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships.c.obj.provides.build
+.PHONY : CMakeFiles/ex2.dir/battleships.c.obj.provides
 
-CMakeFiles/ex2.dir/battleShips.c.obj.provides.build: CMakeFiles/ex2.dir/battleShips.c.obj
+CMakeFiles/ex2.dir/battleships.c.obj.provides.build: CMakeFiles/ex2.dir/battleships.c.obj
 
 
 CMakeFiles/ex2.dir/battleships_game.c.obj: CMakeFiles/ex2.dir/flags.make
@@ -106,13 +106,13 @@ CMakeFiles/ex2.dir/battleships_game.c.obj.provides.build: CMakeFiles/ex2.dir/bat
 
 # Object files for target ex2
 ex2_OBJECTS = \
-"CMakeFiles/ex2.dir/battleShips.c.obj" \
+"CMakeFiles/ex2.dir/battleships.c.obj" \
 "CMakeFiles/ex2.dir/battleships_game.c.obj"
 
 # External object files for target ex2
 ex2_EXTERNAL_OBJECTS =
 
-ex2.exe: CMakeFiles/ex2.dir/battleShips.c.obj
+ex2.exe: CMakeFiles/ex2.dir/battleships.c.obj
 ex2.exe: CMakeFiles/ex2.dir/battleships_game.c.obj
 ex2.exe: CMakeFiles/ex2.dir/build.make
 ex2.exe: CMakeFiles/ex2.dir/linklibs.rsp
@@ -126,7 +126,7 @@ CMakeFiles/ex2.dir/build: ex2.exe
 
 .PHONY : CMakeFiles/ex2.dir/build
 
-CMakeFiles/ex2.dir/requires: CMakeFiles/ex2.dir/battleShips.c.obj.requires
+CMakeFiles/ex2.dir/requires: CMakeFiles/ex2.dir/battleships.c.obj.requires
 CMakeFiles/ex2.dir/requires: CMakeFiles/ex2.dir/battleships_game.c.obj.requires
 
 .PHONY : CMakeFiles/ex2.dir/requires

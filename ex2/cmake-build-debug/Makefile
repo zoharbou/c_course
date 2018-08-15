@@ -122,32 +122,32 @@ ex2/fast:
 	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/build
 .PHONY : ex2/fast
 
-battleShips.obj: battleShips.c.obj
+battleships.obj: battleships.c.obj
 
-.PHONY : battleShips.obj
+.PHONY : battleships.obj
 
 # target to build an object file
-battleShips.c.obj:
-	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleShips.c.obj
-.PHONY : battleShips.c.obj
+battleships.c.obj:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships.c.obj
+.PHONY : battleships.c.obj
 
-battleShips.i: battleShips.c.i
+battleships.i: battleships.c.i
 
-.PHONY : battleShips.i
+.PHONY : battleships.i
 
 # target to preprocess a source file
-battleShips.c.i:
-	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleShips.c.i
-.PHONY : battleShips.c.i
+battleships.c.i:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships.c.i
+.PHONY : battleships.c.i
 
-battleShips.s: battleShips.c.s
+battleships.s: battleships.c.s
 
-.PHONY : battleShips.s
+.PHONY : battleships.s
 
 # target to generate assembly for a file
-battleShips.c.s:
-	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleShips.c.s
-.PHONY : battleShips.c.s
+battleships.c.s:
+	$(MAKE) -f CMakeFiles\ex2.dir\build.make CMakeFiles/ex2.dir/battleships.c.s
+.PHONY : battleships.c.s
 
 battleships_game.obj: battleships_game.c.obj
 
@@ -185,9 +185,9 @@ help:
 	@echo ... ex2
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... battleShips.obj
-	@echo ... battleShips.i
-	@echo ... battleShips.s
+	@echo ... battleships.obj
+	@echo ... battleships.i
+	@echo ... battleships.s
 	@echo ... battleships_game.obj
 	@echo ... battleships_game.i
 	@echo ... battleships_game.s
