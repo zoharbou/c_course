@@ -330,7 +330,7 @@ int buildGameBoard(GameBoard *gameBoard)
 {
     int i;
     gameBoard->board = (Cell **) malloc((gameBoard->size) * sizeof(Cell *));
-    if (*gameBoard->board==NULL)
+    if (gameBoard->board==NULL)
     { // out of memory
         return FALSE;
     }
