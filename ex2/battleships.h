@@ -1,27 +1,33 @@
 /**
- * @file
+ * @file battleship.h
  * @author  Zohar Bouchnik <zohar.bouchnik@mail.huji.ac.il>
  * @version 1.0
- * @date 01 oct 2018
+ * @date 15 august 2018
  *
- * @brief
+ * @brief this is the header file of the program. here you can find the declarations of all
+ * the functions in the program. the program runs the battle ship game.
+ * a guessing game for two players (one is the computer) on which the computer places a fleet of ships
+ * (including battleships). The locations of the fleets are concealed from the other player.
+ * the player "shots" at the other player's ships (the computer's ships),
+ * and the objective of the game is to destroy the opposing player's fleet.
+ *the game is over when all the ships sunk
  *
  * @section LICENSE
  * none
  *
  * @section DESCRIPTION
  *
- * Input  :
- * Process:
- * Output :
+ * Input  : a board size and moves
+ * Process: playing the battleship game
+ * Output : the game will stop if the user win or if the user writes "exit" in the command line
  */
 
-// ------------------------------ includes ------------------------------
+
+// -------------------------- const definitions -------------------------
 
 #ifndef EX2_BATTLESHIPS_H
 #define EX2_BATTLESHIPS_H
 
-// structs for the game
 /**
  * @brief this struct is a direction struct. if you add it to the coordinate you move one step to
  * the direction initialized in it. (can be right, left, up, down...)
@@ -59,26 +65,30 @@ typedef struct Cell
     char status;
 } Cell;
 
+
+/**
+ * the game board struct. it contains a dynamic array of the board and its size(num of rows,columns is equal)
+ */
 typedef struct GameBoard
 {
     Cell **board;
     int size;
 } GameBoard;
 
+
 /**
  * constants for true and false conditions. mostly for readability of the code.
  */
 #define TRUE 0
 #define FALSE 1
-#define NUM_OF_GAME_SHIPS 5
+
+/**
+ * the flags for exit and winning
+ */
 #define EXIT_GAME (-1)
 #define WIN_GAME 2
 
-/**
- * @var a dynamic Cell 2d matrix
- *@brief the game board.
- */
-//Cell **g_gameBoard;
+
 
 // ------------------------------ function declarations -----------------------------
 
@@ -268,5 +278,3 @@ void playGame(GameBoard *gameBoard);
 
 
 #endif //EX2_BATTLESHIPS_H
-
-// -------------------------- const definitions -------------------------
