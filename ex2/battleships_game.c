@@ -72,83 +72,84 @@ int addSunkShip(void)
 
 /**
  * this function runs the rounds of the game in a loop until the game is over
- * @param sizeOfBoard : the size of the board
+ * @param gameBoard : the board of the game.
  */
-void playGame(const int sizeOfBoard)
+void playGame(GameBoard *gameBoard)
 {
     printf(START_GAME_MSG);
     int gameFlag = TRUE;
     while (gameFlag==TRUE)
     {
-        gameFlag = playSingleRound(sizeOfBoard);
+        gameFlag = playSingleRound(gameBoard);
     }
     if (gameFlag==WIN_GAME)
     {
-        endGame(sizeOfBoard);
+        endGame(gameBoard);
         return;
     }
-    if (gameFlag == EXIT_GAME){
-        freeGameBoard(sizeOfBoard);
+    if (gameFlag==EXIT_GAME)
+    {
+        freeGameBoard(gameBoard);
     }
 }
 
 
 /**
  * this function activates a single round in the game.
- * @param sizeOfBoard : the size of the game board
+ * @param gameBoard : the game board
  * @return TRUE if the round finished as planed. EXIT_GAME if the user asked to exit the game
  */
-int playSingleRound(const int sizeOfBoard)
+int playSingleRound(GameBoard *gameBoard)
 {
-    printBoard(sizeOfBoard);
+    printBoard(gameBoard);
     int row, col;
-    int validMove = getMove(&row, &col, sizeOfBoard);
+    int validMove = getMove(&row, &col, gameBoard);
     while (validMove==FALSE)
     {
         fprintf(stderr, INVALID_MOVE_MSG);
-        validMove = getMove(&row, &col, sizeOfBoard);
+        validMove = getMove(&row, &col, gameBoard);
     }
     if (validMove==EXIT_GAME)
     {
         return EXIT_GAME;
     }
-    return placeMove(row, col); // can return win game flag
+    return placeMove(row, col, gameBoard); // can return win game flag
 
 }
 
 /**
  * @brief this function terminates the game. prints game over and the final board.
  * @note here we use the free function for the allocation of the game board
- * @param sizeOfBoard
+ * @param gameBoard : the board of the game
  */
-void endGame(const int sizeOfBoard)
+void endGame(GameBoard *gameBoard)
 {
     printf(END_GAME_MSG);
-    printBoard(sizeOfBoard);
-    freeGameBoard(sizeOfBoard);
+    printBoard(gameBoard);
+    freeGameBoard(gameBoard);
 }
 
 /**
  * this function prints the game board.
- * @param sizeOfBoard : the size of the game board
+ * @param gameBoard : the game board
  */
-void printBoard(const int sizeOfBoard)
+void printBoard(GameBoard *gameBoard)
 {
     char rowNum = 1;
     int colNum = 'a';
     int rowIndex, colIndex;
     printf(" ");
-    for (rowIndex = 0 ; rowIndex < sizeOfBoard ; ++rowIndex) // print the col numbers
+    for (rowIndex = 0 ; rowIndex < gameBoard->size ; ++rowIndex) // print the col numbers
     {
         printf(" %d", rowNum++);
     }
     printf("\n");
-    for (rowIndex = 0 ; rowIndex < sizeOfBoard ; ++rowIndex)
+    for (rowIndex = 0 ; rowIndex < gameBoard->size ; ++rowIndex)
     {
         printf("%c", colNum++); // print the row numbers
-        for (colIndex = 0 ; colIndex < sizeOfBoard ; ++colIndex)
+        for (colIndex = 0 ; colIndex < gameBoard->size ; ++colIndex)
         { // print the status of the cell
-            printf(" %c", g_gameBoard[rowIndex][colIndex].status);
+            printf(" %c", gameBoard->board[rowIndex][colIndex].status);
         }
         printf("\n");
     }
@@ -158,10 +159,10 @@ void printBoard(const int sizeOfBoard)
  * this function gets the move from the user and checks its validation.
  * @param row : the pointer for the row var that will set in the input value
  * @param column : the pointer for the col var that will set in the input value
- * @param sizeOfBoard : the size of the game board.
+ * @param gameBoard : the game board.
  * @return FALSE in case the input is not valid, TRUE for valid input, EXIT_GAME (-1) to exit
  */
-int getMove(int *row, int *column, const int sizeOfBoard)
+int getMove(int *row, int *column, GameBoard *gameBoard)
 {
     printf(ENTER_MOVE_MSG);
     char inputRow[10];
@@ -184,23 +185,23 @@ int getMove(int *row, int *column, const int sizeOfBoard)
     }
     *row = rowInLetter - 'a';
     *column = currCol - 1;
-    return isIndexInBoard(*row, *column, sizeOfBoard); // checks if the index is valid
+    return isIndexInBoard(*row, *column, gameBoard->size); // checks if the index is valid
 }
 
 /**
  * this function free the memory allocated for the game board.
- * @param sizeOfBoard : the size of the board
+ * @param gameBoard : this is the board of the game.
  */
-void freeGameBoard(const int sizeOfBoard)
+void freeGameBoard(GameBoard *gameBoard)
 {
     int i;
-    for (i = 0 ; i < sizeOfBoard ; i++)
+    for (i = 0 ; i < gameBoard->size ; i++)
     {
-        free(g_gameBoard[i]);
-        g_gameBoard[i] = NULL;
+        free(gameBoard->board[i]);
+        gameBoard->board[i] = NULL;
     }
-    free(g_gameBoard);
-    g_gameBoard = NULL;
+    free(gameBoard->board);
+    gameBoard->board = NULL;
 }
 
 
@@ -210,17 +211,19 @@ void freeGameBoard(const int sizeOfBoard)
  */
 int main()
 {
-    int sizeOfBoard;
-    if (getSizeOfBoard(&sizeOfBoard)==FALSE)
+    GameBoard *gameBoard = (GameBoard *) malloc(sizeof(GameBoard));
+    if (getSizeOfBoard(gameBoard)==FALSE)
     {
         fprintf(stderr, INVALID_SIZE_MSG);
         return 1;
     }
-    if (buildGameBoard(sizeOfBoard)==FALSE)
+
+    if (buildGameBoard(gameBoard)==FALSE)
     { // the malloc failed
         fprintf(stderr, OUT_OF_MEMORY_MSG);
         return 1;
     }
-    playGame(sizeOfBoard);
+    playGame(gameBoard);
+    free(gameBoard);
     return 0;
 }
