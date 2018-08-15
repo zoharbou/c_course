@@ -1,8 +1,28 @@
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <memory.h>
 #include "battleships.h"
+
+/**
+ * @file battleShips_game.c
+ * @author  Zohar Bouchnik <zohar.bouchnik@mail.huji.ac.il>
+ * @version 1.0
+ * @date 12 august 2018
+ *
+ * @brief this is the implementation file for the battleShips game.
+ * the main function of the game is here and the user interface functions
+ *
+ * @section LICENSE
+ * none
+ *
+ * @section DESCRIPTION
+ * this is the implementation file for the battleShips game.
+ * the main function of the game is here and the user interface functions
+ * Input  : a size of the board and the moves from the command line
+ * Process: the run flow of the game
+ * Output : the board game after every move
+ */
+
 
 // -------------------------- const definitions -------------------------
 
