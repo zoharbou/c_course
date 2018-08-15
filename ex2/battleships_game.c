@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <mem.h>
+
 #include <stdlib.h>
-#include "battleShips.h"
+#include <memory.h>
+#include "battleships.h"
 
 // -------------------------- const definitions -------------------------
 
@@ -50,24 +51,6 @@ const char *EXIT_CALL = "exit";
 
 // ------------------------------ functions -----------------------------
 
-/**
- * this function adds a sunk ship to the counter to know how many ships are left in the game.
- * it checks if all the ship where sunk and if the answer is positive than it returns the value
- * to finish the game
- *@return TRUE for successful adding. WIN_GAME when add the ship sunk
- */
-int addSunkShip(void)
-{
-    static int sunkShipCounter = 0;
-
-    sunkShipCounter++;
-
-    if (NUM_OF_GAME_SHIPS==sunkShipCounter)
-    {
-        return WIN_GAME;
-    }
-    return TRUE;
-}
 
 
 /**

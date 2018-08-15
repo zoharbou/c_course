@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "battleShips.h"
+#include "battleships.h"
 
 /**
  * @file battleShips.c
@@ -359,6 +359,25 @@ int isLetter(char ch)
         return TRUE;
     }
     return FALSE;
+}
+
+/**
+ * this function adds a sunk ship to the counter to know how many ships are left in the game.
+ * it checks if all the ship where sunk and if the answer is positive than it returns the value
+ * to finish the game
+ *@return TRUE for successful adding. WIN_GAME when add the ship sunk
+ */
+int addSunkShip(void)
+{
+    static int sunkShipCounter = 0;
+
+    sunkShipCounter++;
+
+    if ( sizeof(gameShips) / sizeof(Ship)==sunkShipCounter)
+    {
+        return WIN_GAME;
+    }
+    return TRUE;
 }
 
 
