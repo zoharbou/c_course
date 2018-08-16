@@ -20,9 +20,9 @@
  * @section DESCRIPTION
  * this is the implementation file for the battleShips game.
  * strategy for the game and logic idea
- * Input  :
- * Process: implementation for the functions in the header file
- * Output :
+ * Input  : none
+ * Process: implementation for some of the functions in the header file
+ * Output : none
  */
 
 
@@ -115,13 +115,13 @@ const char INIT_CELL = '_';
 /**
  * @brief this function cleans the input field after we got the user input
  */
-void buff_clr(void)
+void flush(void)
 {
     char junk;
     do
     {
         junk = (char) getchar();
-    } while (junk!='\n');
+    } while (junk != '\n');
 }
 
 
@@ -166,7 +166,7 @@ int isIndexInBoard(const int row, const int col, const int sizeOfBoard)
  */
 int isCellFree(const int row, const int column, GameBoard *gameBoard)
 {
-    if (gameBoard->board[row][column].content==NULL)
+    if (gameBoard->board[row][column].content == NULL)
     {
         return TRUE;
     }
@@ -192,7 +192,7 @@ int isCellValid(const int row, const int col, const int sizeOfShip, GameBoard *g
     { // go throw all the directions and check each one
         rowFinish = row + directions[i].addToRow * (sizeOfShip - 1);
         colFinish = col + directions[i].addToColumn * (sizeOfShip - 1);
-        if (isIndexInBoard(rowFinish, colFinish, gameBoard->size)==TRUE)
+        if (isIndexInBoard(rowFinish, colFinish, gameBoard->size) == TRUE)
         { // we fount a valid direction so the coordinate is ok
             return TRUE;
         }
@@ -220,8 +220,8 @@ void getRandLocation(int *row, int *column, Direction *direction, const int size
     { // get the start location for the ship randomly
         rowStart = rand() % gameBoard->size;
         colStart = rand() % gameBoard->size;
-    } while (isCellFree(rowStart, colStart, gameBoard)==FALSE ||
-             isCellValid(rowStart, colStart, sizeOfShip, gameBoard)==FALSE);
+    } while (isCellFree(rowStart, colStart, gameBoard) == FALSE ||
+             isCellValid(rowStart, colStart, sizeOfShip, gameBoard) == FALSE);
 
     int rowFinish, colFinish;
     Direction curDirection;
@@ -230,7 +230,7 @@ void getRandLocation(int *row, int *column, Direction *direction, const int size
         curDirection = directions[rand() % 4]; // get a random direction
         rowFinish = rowStart + curDirection.addToRow * (sizeOfShip - 1);
         colFinish = colStart + curDirection.addToColumn * (sizeOfShip - 1);
-    } while (isIndexInBoard(rowFinish, colFinish, gameBoard->size)==FALSE);
+    } while (isIndexInBoard(rowFinish, colFinish, gameBoard->size) == FALSE);
     // set the final values
     *row = rowStart;
     *column = colStart;
@@ -253,7 +253,7 @@ int checkCollision(int row, int col, const Direction direction, const int sizeOf
     int i;
     for (i = 0 ; i < sizeOfShip ; ++i)
     {
-        if (isCellFree(row, col, gameBoard)==FALSE)
+        if (isCellFree(row, col, gameBoard) == FALSE)
         {
             return FALSE;
         }
@@ -277,7 +277,7 @@ void placeSingleShip(Ship *ship, GameBoard *gameBoard)
         // find a location and direction
         getRandLocation(&row, &col, &direction, ship->length, gameBoard);
         // check if the place is free
-    } while (checkCollision(row, col, direction, ship->length, gameBoard)==FALSE);
+    } while (checkCollision(row, col, direction, ship->length, gameBoard) == FALSE);
 
     for (i = 0 ; i < ship->length ; ++i)
     { // now place the ship
@@ -330,14 +330,14 @@ int buildGameBoard(GameBoard *gameBoard)
 {
     int i;
     gameBoard->board = (Cell **) malloc((gameBoard->size) * sizeof(Cell *));
-    if (gameBoard->board==NULL)
+    if (gameBoard->board == NULL)
     { // out of memory
         return FALSE;
     }
     for (i = 0 ; i < gameBoard->size ; i++)
     {
         gameBoard->board[i] = (Cell *) malloc((gameBoard->size) * sizeof(Cell));
-        if (gameBoard->board[i]==NULL)
+        if (gameBoard->board[i] == NULL)
         { // out of memory
             return FALSE;
         }
@@ -346,20 +346,6 @@ int buildGameBoard(GameBoard *gameBoard)
     return TRUE;
 }
 
-
-/**
- * this function receives a char and returns if its a small letter or not
- * @param ch : the char we want to check
- * @return TRUE if the char is a small english letter. otherwise FALSE.
- */
-int isLetter(char ch)
-{
-    if (ch >= 'a' && ch <= 'z')
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
 
 /**
  * this function adds a sunk ship to the counter to know how many ships are left in the game.
@@ -373,7 +359,7 @@ int addSunkShip(void)
 
     sunkShipCounter++;
 
-    if ( sizeof(gameShips) / sizeof(Ship)==sunkShipCounter)
+    if (sizeof(gameShips) / sizeof(Ship) == sunkShipCounter)
     {
         return WIN_GAME;
     }
@@ -391,8 +377,8 @@ int addSunkShip(void)
 int isSunk(const int row, const int col, GameBoard *gameBoard)
 {
     Ship *shipGotHit = gameBoard->board[row][col].content;
-    assert(shipGotHit!=NULL);
-    if (shipGotHit->numOfHits==shipGotHit->length)
+    assert(shipGotHit != NULL);
+    if (shipGotHit->numOfHits == shipGotHit->length)
     {
         return addSunkShip(); // WIN_GAME or TRUE
     }
@@ -409,21 +395,21 @@ int isSunk(const int row, const int col, GameBoard *gameBoard)
  */
 int placeMove(const int row, const int column, GameBoard *gameBoard)
 {
-    if (gameBoard->board[row][column].status!=INIT_CELL)
+    if (gameBoard->board[row][column].status != INIT_CELL)
     { // the move was already made
         printf(REPEATED_MOVE_MSG);
         return TRUE;
     } // its a new move
-    if (gameBoard->board[row][column].content!=NULL)
+    if (gameBoard->board[row][column].content != NULL)
     { // there is a ship part in this cell
         gameBoard->board[row][column].status = HIT; // in the user moves board
         gameBoard->board[row][column].content->numOfHits++; // adding a hit to the ship
         int sunkFlag = isSunk(row, column, gameBoard);
-        if (sunkFlag==WIN_GAME)
+        if (sunkFlag == WIN_GAME)
         { // the ship was sunk after the last move and the user won the game
             return WIN_GAME;
         }
-        if (sunkFlag==TRUE) // sunk but there are ships left in the game
+        if (sunkFlag == TRUE) // sunk but there are ships left in the game
         {
             printf(SUNK_MSG);
             return TRUE;
@@ -446,12 +432,12 @@ int getSizeOfBoard(GameBoard *gameBoard)
 {
     printf(ENTER_SIZE_MSG);
     int sizeOfBoard;
-    if (scanf("%d", &sizeOfBoard)!=1)
+    if (scanf("%d", &sizeOfBoard) != 1)
     {
         return FALSE;
     }
-    buff_clr();
-    if (isValidSize(sizeOfBoard)==FALSE)
+    flush();
+    if (isValidSize(sizeOfBoard) == FALSE)
     {
         return FALSE;
     }

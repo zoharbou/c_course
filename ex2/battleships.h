@@ -4,7 +4,7 @@
  * @version 1.0
  * @date 15 august 2018
  *
- * @brief this is the header file of the program. here you can find the declarations of all
+ * @brief this is the header file of the program. here you can find the declarations of some of
  * the functions in the program. the program runs the battle ship game.
  * a guessing game for two players (one is the computer) on which the computer places a fleet of ships
  * (including battleships). The locations of the fleets are concealed from the other player.
@@ -67,7 +67,8 @@ typedef struct Cell
 
 
 /**
- * the game board struct. it contains a dynamic array of the board and its size(num of rows,columns is equal)
+ * the game board struct. it contains a dynamic array of the board and its size
+ * (num of rows,columns is equal)
  */
 typedef struct GameBoard
 {
@@ -92,51 +93,6 @@ typedef struct GameBoard
 
 // ------------------------------ function declarations -----------------------------
 
-/**
- * @brief this function cleans the input field after we got the user input
- */
-void buff_clr(void);
-
-/**
- * this function checks the validity of the input size of the table. if its not valid it will
- * return FALSE (1), else TRUE (0).
- * @param sizeOfBoard: the input for the size of the table
- * @return 1 for invalidity 0 for validity.
- */
-int isValidSize(const int sizeOfBoard);
-
-/**
- * this function checks if a given coordinate is legal according to the size of the board.
- * @param row : the row index
- * @param col : the column index
- * @param sizeOfBoard : the size of the game board
- * @return TRUE for the case that the coordinate is valid. otherwise FALSE.
- */
-int isIndexInBoard(const int row, const int col, const int sizeOfBoard);
-
-/**
- * this function receives a coordinate and checks its matched Cell in the board is free to set a
- * ship in.
-  * @param row : the row index
- * @param col : the column index
- * @param gameBoard : the board of the game
- * @return TRUE for the case that the coordinate is free. otherwise FALSE.
- */
-int isCellFree(const int row, const int column, GameBoard *gameBoard);
-
-/**
- * this function checks if the Cell in the given coordinate is valid in the way that the ship we
- * want to init in it can start from this coordinate and be placed in any of the directions
- * possible in the game. if its not possible to place it in any of the directions we return FALSE.
- * otherwise it means the coordinate is a possible start point for that ship (just in terms of
- * board limits)
- * @param row : the row index
- * @param col : the column index
- * @param sizeOfShip : the size of the ship we want to place
- * @param gameBoard : the game board
- * @return TRUE for the case that the coordinate is valid. otherwise FALSE.
- */
-int isCellValid(const int row, const int col, const int sizeOfShip, GameBoard *gameBoard);
 
 /**
  * this function uses the rand function to find a start coordinate and a valid direction for
@@ -150,28 +106,9 @@ int isCellValid(const int row, const int col, const int sizeOfShip, GameBoard *g
  * @param sizeOfShip : the size of the ship we want to locate
  * @param gameBoard : the game board
  */
-void getRandLocation(int *row, int *column, Direction *direction, const int sizeOfShip,
+void getRandLocation(int *row, int *column, Direction *direction, int sizeOfShip,
                      GameBoard *gameBoard);
 
-/**
- * this function checks for collisions with other ships in the board. if is returns TRUE it means
- * the location and direction are valid and free from any collision. otherwise it will return FALSE
- * @param row : the start index for the row coordinate for the ship to stand
- * @param col : the start index for the column coordinate for the ship to stand
- * @param direction : the chosen direction of the ship we want to check
- * @param sizeOfShip : the size of the ship we want to locate on the board
- * @param gameBoard : the board of the game
- * @return TRUE for the case that there are no collisions and FALSE otherwise.
- */
-int checkCollision(int row, int col, const Direction direction, const int sizeOfShip,
-                   GameBoard *gameBoard);
-
-/**
-* this function places a single ship in a rand location on the board
-* @param ship : the pointer for the ship we want to place
-* @param gameBoard : the game board
-*/
-void placeSingleShip(Ship *ship, GameBoard *gameBoard);
 
 /**
  * this function places all the ships in the game board in rand locations
@@ -179,12 +116,6 @@ void placeSingleShip(Ship *ship, GameBoard *gameBoard);
  */
 void placeShips(GameBoard *gameBoard);
 
-/**
- * this function init the game board for default values (the Cell's status to '_' and the Cell's
- * content to NULL) and places the ships in random locations.
- * @param gameBoard : the board of the game
- */
-void initBoard(GameBoard *gameBoard);
 
 /**
  * this function builds the game board according to the given size. locates the ships and sets it
@@ -200,20 +131,6 @@ int buildGameBoard(GameBoard *gameBoard);
  */
 void freeGameBoard(GameBoard *gameBoard);
 
-/**
- * this function receives a char and returns if its a small letter or not
- * @param ch : the char we want to check
- * @return TRUE if the char is a small english letter. otherwise FALSE.
- */
-int isLetter(char ch);
-
-/**
- * this function adds a sunk ship to the counter to know how many ships are left in the game.
- * it checks if all the ship where sunk and if the answer is positive than it returns the value
- * to finish the game
- *@return TRUE for successful adding. WIN_GAME when add the ship sunk
- */
-int addSunkShip(void);
 
 /**
  * this function gets the move from the user and checks its validation.
@@ -231,7 +148,7 @@ int getMove(int *row, int *column, GameBoard *gameBoard);
  * @param gameBoard : the board of the game
  * @return TRUE if the ship is sunk, FALSE otherwise. returns WIN_GAME if all the ship where sunk
  */
-int isSunk(const int row, const int col, GameBoard *gameBoard);
+int isSunk(int row, int col, GameBoard *gameBoard);
 
 /**
  *this function places the move that the user inserted. it prints to the screen the matched
@@ -241,13 +158,13 @@ int isSunk(const int row, const int col, GameBoard *gameBoard);
  * @param gameBoard : the board of the game
  * @return TRUE for successful move and WIN_GAME in case that the move finished the game
  */
-int placeMove(const int row, const int column, GameBoard *gameBoard);
+int placeMove(int row, int column, GameBoard *gameBoard);
 
 /**
  * this function prints the game board.
  * @param gameBoard : the game board
  */
-void printBoard(GameBoard *gameBoard);
+void printBoard(const GameBoard *gameBoard);
 
 /**
  * this function activates a single round in the game.
@@ -262,6 +179,15 @@ int playSingleRound(GameBoard *gameBoard);
  * @param gameBoard : the board of the game
  */
 void endGame(GameBoard *gameBoard);
+
+/**
+ * this function checks if a given coordinate is legal according to the size of the board.
+ * @param row : the row index
+ * @param col : the column index
+ * @param sizeOfBoard : the size of the game board
+ * @return TRUE for the case that the coordinate is valid. otherwise FALSE.
+ */
+int isIndexInBoard(int row, int col, int sizeOfBoard);
 
 /**
  * this function gets the size of the board from the user

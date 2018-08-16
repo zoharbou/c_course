@@ -68,6 +68,12 @@ const char *END_GAME_MSG = "Game over\n";
  */
 const char *EXIT_CALL = "exit";
 
+/**
+ * the lowest index possible for the game board. maximal is simply the board size - 1.
+ * maximal cant be constant cause its unknown at compile time
+ */
+const int MIN_INDEX = 0;
+
 
 // ------------------------------ functions -----------------------------
 
@@ -81,16 +87,16 @@ void playGame(GameBoard *gameBoard)
 {
     printf(START_GAME_MSG);
     int gameFlag = TRUE;
-    while (gameFlag==TRUE)
+    while (gameFlag == TRUE)
     {
         gameFlag = playSingleRound(gameBoard);
     }
-    if (gameFlag==WIN_GAME)
+    if (gameFlag == WIN_GAME)
     {
         endGame(gameBoard);
         return;
     }
-    if (gameFlag==EXIT_GAME)
+    if (gameFlag == EXIT_GAME)
     {
         freeGameBoard(gameBoard);
     }
@@ -107,12 +113,12 @@ int playSingleRound(GameBoard *gameBoard)
     printBoard(gameBoard);
     int row, col;
     int validMove = getMove(&row, &col, gameBoard);
-    while (validMove==FALSE)
+    while (validMove == FALSE)
     {
         fprintf(stderr, INVALID_MOVE_MSG);
         validMove = getMove(&row, &col, gameBoard);
     }
-    if (validMove==EXIT_GAME)
+    if (validMove == EXIT_GAME)
     {
         return EXIT_GAME;
     }
@@ -136,7 +142,7 @@ void endGame(GameBoard *gameBoard)
  * this function prints the game board.
  * @param gameBoard : the game board
  */
-void printBoard(GameBoard *gameBoard)
+void printBoard(const GameBoard *gameBoard)
 {
     char rowNum = 1;
     int colNum = 'a';
@@ -158,6 +164,39 @@ void printBoard(GameBoard *gameBoard)
     }
 }
 
+
+/**
+ * this function receives a char and returns if its a small letter or not
+ * @param ch : the char we want to check
+ * @return TRUE if the char is a small english letter. otherwise FALSE.
+ */
+int isLetter(char ch)
+{
+    if (ch >= 'a' && ch <= 'z')
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
+/**
+ * this function checks if a given coordinate is legal according to the size of the board.
+ * @param row : the row index
+ * @param col : the column index
+ * @param sizeOfBoard : the size of the game board
+ * @return TRUE for the case that the coordinate is valid. otherwise FALSE.
+ */
+int isIndexInBoard(const int row, const int col, const int sizeOfBoard)
+{
+    if (row >= MIN_INDEX && row < sizeOfBoard && col >= MIN_INDEX && col < sizeOfBoard)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
 /**
  * this function gets the move from the user and checks its validation.
  * @param row : the pointer for the row var that will set in the input value
@@ -171,18 +210,18 @@ int getMove(int *row, int *column, GameBoard *gameBoard)
     char inputRow[10];
     char inputCol[10];
     scanf("%s", inputRow);
-    if (strcmp(inputRow, EXIT_CALL)==TRUE)
+    if (strcmp(inputRow, EXIT_CALL) == TRUE)
     { // we need to exit the program
         return EXIT_GAME;
     }
-    if (strlen(inputRow)!=1)
+    if (strlen(inputRow) != 1)
     { // the input is not a single char
         return FALSE;
     }
     scanf("%s", inputCol); // get the col coordinate
     int currCol = atoi(inputCol);
     char rowInLetter = inputRow[0];
-    if (isLetter(rowInLetter)==FALSE)
+    if (isLetter(rowInLetter) == FALSE)
     { // the input is not a letter follows by a number.
         return FALSE;
     }
@@ -215,13 +254,13 @@ void freeGameBoard(GameBoard *gameBoard)
 int main()
 {
     GameBoard *gameBoard = (GameBoard *) malloc(sizeof(GameBoard));
-    if (getSizeOfBoard(gameBoard)==FALSE)
+    if (getSizeOfBoard(gameBoard) == FALSE)
     {
         fprintf(stderr, INVALID_SIZE_MSG);
         return 1;
     }
 
-    if (buildGameBoard(gameBoard)==FALSE)
+    if (buildGameBoard(gameBoard) == FALSE)
     { // the malloc failed
         fprintf(stderr, OUT_OF_MEMORY_MSG);
         return 1;
